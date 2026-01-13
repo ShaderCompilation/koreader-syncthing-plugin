@@ -21,6 +21,7 @@ The method of running Syncthing is originally based on [The Anarcat's blog post]
 - Kindle Scribe
 - Kindle Voyage
 - Kindle KT2 (7th Generation, 2014)
+- Kindle PW2 (6th Generation, 2013)
 - Kindle PW5 (11th Generation, 2021)
 - Kobo Clara BW
 - Kobo Clara Colour
