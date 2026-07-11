@@ -394,7 +394,7 @@ function Syncthing:getPendingMenu()
     local sub_item_table = {}
 
     table.insert(sub_item_table, {
-        text = #devices and _("Pending Devices") or _("No Pending Devices"),
+        text = next(devices) ~= nil and _("Pending Devices") or _("No Pending Devices"),
         enabled_func = function() return false end
     })
 
@@ -441,7 +441,7 @@ function Syncthing:getPendingMenu()
     sub_item_table[#sub_item_table].separator = true
 
     table.insert(sub_item_table, {
-        text = #folders and _("Pending Folders") or _("No Pending Folders"),
+        text = next(folders) ~= nil and _("Pending Folders") or _("No Pending Folders"),
         enabled_func = function() return false end
     })
 
