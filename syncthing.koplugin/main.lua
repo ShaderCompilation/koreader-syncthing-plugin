@@ -34,6 +34,13 @@ local pid_path = "/tmp/syncthing_koreader.pid"
 local config_path = "settings/syncthing/config.xml"
 local device_id_path = "settings/syncthing/device-id"
 
+-- os.execute invokes a shell, so every value passed to the launcher must be
+-- quoted as one shell argument. In particular, KOReader's home directory can
+-- contain spaces (for example, "Kindle Library").
+local function shell_quote(value)
+    return "'" .. tostring(value):gsub("'", "'\\''") .. "'"
+end
+
 function Syncthing:init()
     self.syncthing_port = G_reader_settings:readSetting("syncthing_port") or "8384"
     self.autostart = G_reader_settings:isTrue("syncthing_autostart")
@@ -57,10 +64,10 @@ function Syncthing:start(password)
         password = random.uuid()
     end
     local cmd = string.format("%s %s %s %s",
-        "./plugins/syncthing.koplugin/start-syncthing",
-        G_reader_settings:readSetting("home_dir"),
-        self.syncthing_port,
-        password or "")
+        shell_quote("./plugins/syncthing.koplugin/start-syncthing"),
+        shell_quote(G_reader_settings:readSetting("home_dir") or "/"),
+        shell_quote(self.syncthing_port),
+        shell_quote(password or ""))
 
     -- Start loopback interface so that we can access the Syncthing API later
     if Device:isKobo() then
