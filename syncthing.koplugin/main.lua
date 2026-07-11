@@ -21,7 +21,7 @@ local random = require("random")
 local T = ffiutil.template
 
 local path = DataStorage:getFullDataDir()
-if not util.pathExists("dropbear") then
+if not util.pathExists("plugins/syncthing.koplugin/syncthing") then
     return { disabled = true, }
 end
 
