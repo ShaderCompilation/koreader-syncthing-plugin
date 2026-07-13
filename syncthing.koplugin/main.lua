@@ -117,7 +117,15 @@ function Syncthing:start(password)
 end
 
 function Syncthing:isRunning()
-    return util.pathExists(pid_path)
+    if not util.pathExists(pid_path) then return false end
+    local f = io.open(pid_path, "r")
+    if not f then return false end
+    local pid = tonumber(f:read("*l") or "")
+    f:close()
+    if pid and util.pathExists("/proc/" .. pid) then return true end
+    -- Stale PID file: clean it up so a fresh start is allowed
+    os.remove(pid_path)
+    return false
 end
 
 --- Stops the Syncthing process started by this plugin.
@@ -198,13 +206,17 @@ function Syncthing:stop()
 end
 
 function Syncthing:onToggleSyncthingServer(callback)
+    local safe_callback = type(callback) == "function" and callback or function() end
+
     if self:isRunning() then
         self:stop()
         if callback then callback() end
+        safe_callback()
     else
         NetworkMgr:runWhenConnected(function()
             self:start()
             if callback then callback() end
+            safe_callback()
         end)
     end
 end
