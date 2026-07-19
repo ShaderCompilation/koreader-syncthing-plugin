@@ -1,3 +1,5 @@
+# Archiving this, since all the changes have been merged back to [the original repo](https://github.com/jasonchoimtt/koreader-syncthing).
+
 # Syncthing plugin for KOReader
 
 This is a plugin for running Syncthing on e-readers running KOReader. Syncthing
